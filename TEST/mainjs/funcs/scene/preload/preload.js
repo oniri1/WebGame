@@ -1,8 +1,9 @@
 export class Preload extends Phaser.Scene {
     moveSetted = false;
+
     objs;
     objArr = [];
-    bombs;
+
     score = 0;
     scoreText;
     cursors;

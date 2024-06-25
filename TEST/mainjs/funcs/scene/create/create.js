@@ -1,5 +1,5 @@
 import { Preload } from "../preload/preload.js";
-import { collectStar, hitBomb } from "../../event/EveryEvents.js";
+
 import everySetValues from "../../../setting/CreateSet.js";
 
 export class Set extends Preload {
@@ -14,157 +14,181 @@ export class Set extends Preload {
         this.aniMaition(this.everySetValues.anis);
         this.playerSet(this.everySetValues.player);
         this.objsSet(this.everySetValues.objs);
-
-        // this.bombSet();
-        this.crashSet();
+        this.bombSet(this.everySetValues.bombs);
+        this.worldCrashSet();
+        this.playerCrashSet(this.everySetValues.playerCrashOn);
+        this.crashEventSet(this.everySetValues.playerCrashEvents);
         this.cameraSet();
     }
 
     backgroundSet(obj) {
-        this.add.image(obj.x, obj.y, obj.fileName);
+        if (obj != undefined) {
+            this.add.image(obj.x, obj.y, obj.fileName);
+        }
     }
     platformsSet(arr) {
-        this.platforms = this.physics.add.staticGroup();
+        if (arr != undefined) {
+            this.platforms = this.physics.add.staticGroup();
 
-        arr.forEach((platform) => {
-            let insPlatform = this.platforms.create(
-                platform.x,
-                platform.y,
-                platform.fileName
-            );
+            arr.forEach((platform) => {
+                let insPlatform = this.platforms.create(
+                    platform.x,
+                    platform.y,
+                    platform.fileName
+                );
 
-            if (platform.set != undefined) {
-                platform.set.forEach((atcion) => {
-                    if (atcion.scale != undefined) {
-                        insPlatform.setScale(atcion.scale);
+                if (platform.set != undefined) {
+                    platform.set.forEach((atcion) => {
+                        if (atcion.scale != undefined) {
+                            insPlatform.setScale(atcion.scale);
+                        }
+                        if (atcion.refreshBody) {
+                            insPlatform.refreshBody();
+                        }
+                    });
+                }
+            });
+        }
+    }
+    aniMaition(arr) {
+        if (arr != undefined) {
+            if (this.aniDoSet) {
+                arr.forEach((values) => {
+                    let infinityValue;
+
+                    if (values.infinity) {
+                        infinityValue = -1;
+                    } else {
+                        infinityValue = 0;
                     }
-                    if (atcion.refreshBody) {
-                        insPlatform.refreshBody();
+
+                    //애니메이션 파트
+                    if (values.isFrame) {
+                        this.anims.create({
+                            key: values.key,
+                            frames: this.anims.generateFrameNumbers(
+                                values.sprite,
+                                {
+                                    start: values.frameStep[0],
+                                    end: values.frameStep[1],
+                                }
+                            ),
+                            frameRate: values.fps,
+                            repeat: infinityValue,
+                        });
+                    } else {
+                        this.anims.create({
+                            key: values.key,
+                            frames: [
+                                { key: values.sprite, frame: values.frameStep },
+                            ],
+                            frameRate: values.fps,
+                        });
                     }
                 });
             }
-        });
-    }
-    aniMaition(arr) {
-        if (this.aniDoSet) {
-            arr.forEach((values) => {
-                let infinityValue;
-
-                if (values.infinity) {
-                    infinityValue = -1;
-                } else {
-                    infinityValue = 0;
-                }
-
-                //애니메이션 파트
-                if (values.isFrame) {
-                    this.anims.create({
-                        key: values.key,
-                        frames: this.anims.generateFrameNumbers(values.sprite, {
-                            start: values.frameStep[0],
-                            end: values.frameStep[1],
-                        }),
-                        frameRate: values.fps,
-                        repeat: infinityValue,
-                    });
-                } else {
-                    this.anims.create({
-                        key: values.key,
-                        frames: [
-                            { key: values.sprite, frame: values.frameStep },
-                        ],
-                        frameRate: values.fps,
-                    });
-                }
-            });
+            this.aniDoSet = false;
         }
-        this.aniDoSet = false;
     }
     playerSet(obj) {
-        //플레이어 파트
-        this.player = this.physics.add.sprite(obj.x, obj.y, obj.sprite);
-        // player.body.setGravityY(300);
-        if (obj.setAuto) {
-            this.player.setBounce(0.2);
-            this.player.setCollideWorldBounds(true);
+        if (obj != undefined) {
+            //플레이어 파트
+            this.player = this.physics.add.sprite(obj.x, obj.y, obj.sprite);
+            // player.body.setGravityY(300);
+            if (obj.setAuto) {
+                this.player.setBounce(0.2);
+                this.player.setCollideWorldBounds(true);
+            }
         }
     }
     objsSet(arr) {
-        arr.forEach((obj) => {
-            let setXYValue;
+        if (arr != undefined) {
+            arr.forEach((obj) => {
+                this.objs = this.physics.add.group({
+                    key: obj.objKey,
+                    repeat: obj.num,
+                    setXY: obj.position,
+                });
 
-            if (obj.stepX != undefined && obj.stepY != undefined) {
-                setXYValue = {
-                    x: obj.x,
-                    y: obj.y,
-                    stepX: obj.stepX,
-                    stepY: obj.stepY,
-                };
-            } else if (obj.stepX != undefined) {
-                setXYValue = {
-                    x: obj.x,
-                    y: obj.y,
-                    stepX: obj.stepX,
-                };
-            } else {
-                setXYValue = {
-                    x: obj.x,
-                    y: obj.y,
-                    stepY: obj.stepY,
-                };
-            }
-
-            this.objs = this.physics.add.group({
-                key: obj.objKey,
-                repeat: obj.num,
-                setXY: setXYValue,
+                this.objs.children.iterate(function (child) {
+                    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.6));
+                    child.setBounceX(Phaser.Math.FloatBetween(0.7, 0.9));
+                });
+                this.objArr.push(this.objs);
             });
+        }
+    }
+    bombSet(arr) {
+        if (arr != undefined) {
+            //폭탄
+            arr.forEach((obj) => {
+                this.objs = this.physics.add.group({
+                    key: obj.objKey,
+                    repeat: obj.num - 1,
+                    setXY: obj.position,
+                });
 
-            this.objs.children.iterate(function (child) {
-                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-                child.setBounceX(Phaser.Math.FloatBetween(0.4, 0.8));
+                this.objs.children.iterate(function (child) {
+                    child.body.setGravityX(obj.setGravity?.x || 0);
+                    child.body.setGravityY(obj.setGravity?.y || 0);
+                    child.setVelocityX(obj.setVelocity?.x || 0);
+                    child.setVelocityY(obj.setVelocity?.y || 0);
+
+                    child.setBounce(Phaser.Math.FloatBetween(0.8, 1));
+                });
+                this.objArr.push(this.objs);
             });
-
-            const insObj = this.objs;
-
-            this.objArr.push(insObj);
+        }
+    }
+    worldCrashSet() {
+        this.objArr.forEach((obj) => {
+            obj.children.iterate(function (child) {
+                child.setCollideWorldBounds(true);
+            });
         });
     }
-
-    bombSet() {
-        //폭탄
-        this.bombs = this.physics.add.group({
-            key: "bomb",
-            repeat: 0,
-            setXY: { x: 20, y: 0, stepX: 50 },
-        });
-        this.bombs.children.iterate(function (child) {
-            child.body.setGravityX(50);
-            child.setBounce(Phaser.Math.FloatBetween(0.8, 1.2));
-            child.setCollideWorldBounds(true);
-        });
-
-        this.physics.add.overlap(this.player, this.bombs, hitBomb, null, this);
-    }
-    crashSet() {
-        //충돌 파트
+    playerCrashSet(arr) {
+        //주석 처리한 건 개별 기능으로 만들지 않은 기능이다. 나중에 쓸 이유가 생기면 만들 예정
+        //모든 플랫폼과 플레이어
         this.physics.add.collider(this.platforms, this.player);
-        this.physics.add.collider(this.platforms, this.objArr[0]);
-        // this.physics.add.collider(this.bombs, this.platforms);
-        // this.physics.add.collider(player, stars);
-        // this.physics.add.collider(this.stars, this.stars);
-        this.physics.add.overlap(
-            this.player,
-            this.objArr[0],
-            collectStar,
-            null,
-            this
-        );
-        // this.scoreText = this.add.text(16, 16, "score: 0", {
-        //     fontSize: "32px",
-        //     fill: "#000",
-        // });
+        //모든 플랫폼과 오브젝트
+        this.objArr.forEach((obj) => {
+            this.physics.add.collider(this.platforms, obj);
+        });
+
+        //플레이어와 부딪힐 오브젝트
+        if (arr != undefined) {
+            arr.forEach((str) => {
+                this.objArr.forEach((obj) => {
+                    if (str === obj.children.entries[0].texture.key) {
+                        this.physics.add.collider(this.player, obj);
+                    }
+                });
+            });
+        }
     }
+    //
+    crashEventSet(arr) {
+        arr.forEach((event) => {
+            let matchedObj;
+
+            this.objArr.forEach((obj) => {
+                if (event[0] === obj.children.entries[0].texture.key) {
+                    matchedObj = obj;
+                }
+            });
+
+            this.physics.add.overlap(
+                this.player,
+                matchedObj,
+                event[1],
+                null,
+                this
+            );
+        });
+    }
+
+    //이거 하고 이벤트들 고쳐야 함
     cameraSet() {
         //camera
         this.cameras.main.setBounds(0, 0, 1600, 1200);

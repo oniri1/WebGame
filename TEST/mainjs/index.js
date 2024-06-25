@@ -18,6 +18,7 @@ let config = {
         },
     },
     scene: new Example(oneChapter),
+    objCrashEvent: [[, ,], []],
 };
 
 var game = new Phaser.Game(config);
