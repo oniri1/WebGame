@@ -53,6 +53,7 @@ export default {
         ["star", collectStar],
         ["bomb", hitBomb],
     ],
+    cameraConfig: { x: 1200, y: 600 },
 };
 
 // this.scoreText = this.add.text(16, 16, "score: 0", {

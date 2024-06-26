@@ -1,6 +1,7 @@
 import { Create } from "../create/create.js";
 
 export class update extends Create {
+    cursors;
     update() {
         //방향키 입력시 동작 파트
         this.cursors = this.input.keyboard.createCursorKeys();

@@ -1,12 +1,13 @@
 import { Example } from "./funcs/scene/scene.js";
 import { oneChapter } from "./funcs/key/keyNames.js";
+import sets from "./setting/CreateSet.js";
 
-let a;
+const camera = sets.cameraConfig;
 
 let config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: camera.x,
+    height: camera.y,
     physics: {
         default: "arcade",
         arcade: {
@@ -17,8 +18,8 @@ let config = {
             debug: false,
         },
     },
+    //key:one
     scene: new Example(oneChapter),
-    objCrashEvent: [[, ,], []],
 };
 
 var game = new Phaser.Game(config);

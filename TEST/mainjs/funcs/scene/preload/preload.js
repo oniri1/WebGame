@@ -1,13 +1,7 @@
 export class Preload extends Phaser.Scene {
-    moveSetted = false;
+    // score = 0;
+    // scoreText;
 
-    objs;
-    objArr = [];
-
-    score = 0;
-    scoreText;
-    cursors;
-    check = 0;
     //이미지를 불러오 변수 명과 그 주소를 설정하는 코드
     preload() {
         this.load.image("sky", "imgs/sky.png");

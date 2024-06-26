@@ -3,8 +3,12 @@ import { Preload } from "../preload/preload.js";
 import everySetValues from "../../../setting/CreateSet.js";
 
 export class Set extends Preload {
-    everySetValues = everySetValues;
+    moveSetted = false;
+    objs;
+    objArr = [];
     platforms;
+
+    everySetValues = everySetValues;
     aniDoSet = true;
     player;
 
@@ -18,7 +22,7 @@ export class Set extends Preload {
         this.worldCrashSet();
         this.playerCrashSet(this.everySetValues.playerCrashOn);
         this.crashEventSet(this.everySetValues.playerCrashEvents);
-        this.cameraSet();
+        this.cameraSet(this.everySetValues.cameraConfig);
     }
 
     backgroundSet(obj) {
@@ -187,11 +191,9 @@ export class Set extends Preload {
             );
         });
     }
-
-    //이거 하고 이벤트들 고쳐야 함
-    cameraSet() {
+    cameraSet(obj) {
         //camera
-        this.cameras.main.setBounds(0, 0, 1600, 1200);
+        this.cameras.main.setBounds(0, 0, obj.x, obj.y);
         this.cameras.main.startFollow(this.player);
     }
 }
