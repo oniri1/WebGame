@@ -8,8 +8,10 @@ export class Example extends Set {
   }
 
   preload() {
-    this.load.image("sky", "imgs/sky.png");
+    this.load.image("backGround", "imgs/background/stone.png");
+
     this.load.image("ground", "imgs/platform.png");
+
     this.load.image("star", "imgs/star.png");
     this.load.image("bomb", "imgs/bomb.png");
 

@@ -13,7 +13,10 @@ export class Set extends Phaser.Scene {
   player;
 
   everySet() {
-    this.backgroundSet(this.everySetValues.backGround);
+    this.backgroundSet(
+      this.everySetValues.backGround,
+      this.everySetValues.cameraConfig
+    );
     this.platformsSet(this.everySetValues.platforms);
     this.aniMaition(this.everySetValues.anis);
     this.playerSet(this.everySetValues.player);
@@ -24,9 +27,32 @@ export class Set extends Phaser.Scene {
     this.crashEventSet(this.everySetValues.playerCrashEvents);
     this.cameraSet(this.everySetValues.cameraConfig);
   }
-  backgroundSet(obj) {
-    if (obj !== undefined) {
-      this.add.image(obj.x, obj.y, obj.fileName);
+  backgroundSet(obj, worldSize) {
+    if (obj !== undefined && worldSize !== undefined) {
+      const x = worldSize.x;
+      const y = worldSize.y;
+
+      const texture = this.textures.get(obj.fileName);
+      const sourceImage = texture.getSourceImage();
+      console.log(sourceImage);
+
+      const imgX = sourceImage.width;
+      const imgY = sourceImage.height;
+      console.log(imgX, imgY);
+
+      for (let makeX = 0, makeY = 0; true; ) {
+        console.log("hi");
+        this.add.image(makeX, makeY, obj.fileName);
+
+        if (makeX < x) {
+          makeX += imgX;
+        } else if (makeY < y) {
+          makeX = 0;
+          makeY += imgY;
+        } else {
+          break;
+        }
+      }
     }
   }
   platformsSet(arr) {
@@ -96,6 +122,9 @@ export class Set extends Phaser.Scene {
       if (obj.setAuto) {
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
+
+        this.player.setSize(32, 40);
+        this.player.setOffset(16, 20);
       }
     }
   }

@@ -1,7 +1,7 @@
 import { collectStar, hitBomb } from "../funcs/event/EveryEvents.js";
 
 const config = {
-  backGround: { x: 400, y: 300, fileName: "sky" },
+  backGround: { fileName: "backGround" },
 
   anis: [
     {
@@ -32,22 +32,24 @@ const config = {
     { x: 600, y: 400, fileName: "ground" },
     { x: 750, y: 220, fileName: "ground" },
   ],
-  objs: [{ objKey: "star", num: 1, position: { x: 120, y: 0, stepX: 300 } }],
-  bombs: [
-    {
-      objKey: "bomb",
-      num: 2,
-      position: { x: 20, y: 0, stepX: 50 },
-      // setGravity: { x: 50 },
-      // setVelocity: { x: 160 },
-    },
-  ],
+  // objs: [{ objKey: "star", num: 1, position: { x: 120, y: 0, stepX: 300 } }],
+
+  // bombs: [
+  //   // {
+  //   //   objKey: "bomb",
+  //   //   num: 2,
+  //   //   position: { x: 20, y: 0, stepX: 50 },
+  //   //   // setGravity: { x: 50 },
+  //   //   // setVelocity: { x: 160 },
+  //   // },
+  // ],
+
   // playerCrashOn: ["bomb"],
   playerCrashEvents: [
     ["star", collectStar],
     ["bomb", hitBomb],
   ],
-  cameraConfig: { x: 1200, y: 600 },
+  cameraConfig: { x: 800, y: 600 },
 };
 
 // this.scoreText = this.add.text(16, 16, "score: 0", {
