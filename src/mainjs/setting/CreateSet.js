@@ -6,28 +6,22 @@ const config = {
   anis: [
     {
       key: "left",
-      sprite: "dude",
-      frameStep: [0, 3],
+      sprite: "male_left",
+      frameStep: [10, 17],
       fps: 10,
       isFrame: true,
-      infinity: true,
-    },
-    {
-      key: "turn",
-      sprite: "dude",
-      frameStep: 4,
-      fps: 20,
+      // infinity: true,
     },
     {
       key: "right",
-      sprite: "dude",
+      sprite: "male_right",
       isFrame: true,
-      frameStep: [5, 8],
+      frameStep: [19, 12],
       fps: 10,
-      infinity: true,
+      // infinity: true,
     },
   ],
-  player: { x: 100, y: 450, sprite: "dude", setAuto: true },
+  player: { x: 100, y: 450, sprite: "male_left", setAuto: true },
   platforms: [
     {
       x: 400,

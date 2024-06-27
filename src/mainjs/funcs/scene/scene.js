@@ -12,9 +12,14 @@ export class Example extends Set {
     this.load.image("ground", "imgs/platform.png");
     this.load.image("star", "imgs/star.png");
     this.load.image("bomb", "imgs/bomb.png");
-    this.load.spritesheet("dude", "imgs/dude.png", {
-      frameWidth: 32,
-      frameHeight: 48,
+
+    this.load.spritesheet("male_left", "imgs/male_left.png", {
+      frameWidth: 80,
+      frameHeight: 64,
+    });
+    this.load.spritesheet("male_right", "imgs/male_right.png", {
+      frameWidth: 80,
+      frameHeight: 64,
     });
   }
 
@@ -23,16 +28,14 @@ export class Example extends Set {
     this.cursors = this.input.keyboard.createCursorKeys();
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
-
       this.player.anims.play("left", true);
     } else if (this.cursors.right.isDown) {
       this.player.setVelocityX(160);
-
       this.player.anims.play("right", true);
     } else {
       this.player.setVelocityX(0);
-
-      this.player.anims.play("turn");
+      // this.player.anims.play("turn");
+      this.player.anims.stop();
     }
 
     // console.log(this.aniSet);
