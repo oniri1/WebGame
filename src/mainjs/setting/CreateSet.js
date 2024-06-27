@@ -1,4 +1,4 @@
-import { collectStar, hitBomb } from "../funcs/event/EveryEvents.js";
+// import { collectStar, hitBomb } from "../funcs/event/EveryEvents.js";
 
 const config = {
   backGround: { fileName: "backGround" },
@@ -20,17 +20,45 @@ const config = {
       fps: 10,
       // infinity: true,
     },
+    {
+      key: "stop_right",
+      sprite: "male_right",
+      isFrame: true,
+      frameStep: [5, 9],
+      fps: 5,
+    },
+    {
+      key: "stop_left",
+      sprite: "male_left",
+      frameStep: [0, 4],
+      fps: 5,
+      isFrame: true,
+    },
   ],
   player: { x: 100, y: 450, sprite: "male_left", setAuto: true },
   platforms: [
     {
       x: 400,
-      y: 568,
+      y: 580,
       fileName: "ground",
-      set: [{ scale: 2 }, { refreshBody: true }],
+      set: [
+        { scale: { x: 1, y: 0.8 } },
+        { refreshBody: true },
+        { color: 0x996600 },
+      ],
     },
-    { x: 600, y: 400, fileName: "ground" },
-    { x: 750, y: 220, fileName: "ground" },
+    {
+      x: 400,
+      y: 380,
+      fileName: "ground",
+      set: [{ scale: { x: 1, y: 0.7 } }, { color: 0x996600 }],
+    },
+    {
+      x: 400,
+      y: 180,
+      fileName: "ground",
+      set: [{ scale: { x: 1, y: 0.7 } }, { color: 0x996600 }],
+    },
   ],
   // objs: [{ objKey: "star", num: 1, position: { x: 120, y: 0, stepX: 300 } }],
 
@@ -45,10 +73,12 @@ const config = {
   // ],
 
   // playerCrashOn: ["bomb"],
-  playerCrashEvents: [
-    ["star", collectStar],
-    ["bomb", hitBomb],
-  ],
+
+  // playerCrashEvents: [
+  //   ["star", collectStar],
+  //   ["bomb", hitBomb],
+  // ],
+
   cameraConfig: { x: 800, y: 600 },
 };
 

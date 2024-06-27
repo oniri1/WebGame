@@ -2,6 +2,7 @@ import { Set } from "./set/set.js";
 
 export class Example extends Set {
   cursors;
+  lastMove = 0;
 
   create() {
     this.everySet();
@@ -9,11 +10,7 @@ export class Example extends Set {
 
   preload() {
     this.load.image("backGround", "imgs/background/stone.png");
-
     this.load.image("ground", "imgs/platform.png");
-
-    this.load.image("star", "imgs/star.png");
-    this.load.image("bomb", "imgs/bomb.png");
 
     this.load.spritesheet("male_left", "imgs/male_left.png", {
       frameWidth: 80,
@@ -31,13 +28,22 @@ export class Example extends Set {
     if (this.cursors.left.isDown) {
       this.player.setVelocityX(-160);
       this.player.anims.play("left", true);
+      this.lastMove = 1;
     } else if (this.cursors.right.isDown) {
       this.player.setVelocityX(160);
       this.player.anims.play("right", true);
+      this.lastMove = 0;
     } else {
       this.player.setVelocityX(0);
-      // this.player.anims.play("turn");
-      this.player.anims.stop();
+      this.keUp = true;
+
+      if (this.lastMove === 0) {
+        this.player.anims.play("stop_right", true);
+      } else {
+        this.player.anims.play("stop_left", true);
+      }
+
+      // this.player.anims.stop();
     }
 
     // console.log(this.aniSet);

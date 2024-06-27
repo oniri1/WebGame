@@ -34,14 +34,12 @@ export class Set extends Phaser.Scene {
 
       const texture = this.textures.get(obj.fileName);
       const sourceImage = texture.getSourceImage();
-      console.log(sourceImage);
 
       const imgX = sourceImage.width;
       const imgY = sourceImage.height;
-      console.log(imgX, imgY);
 
       for (let makeX = 0, makeY = 0; true; ) {
-        console.log("hi");
+        console.log("월드 세팅중");
         this.add.image(makeX, makeY, obj.fileName);
 
         if (makeX < x) {
@@ -69,10 +67,14 @@ export class Set extends Phaser.Scene {
         if (platform.set !== undefined) {
           platform.set.forEach((atcion) => {
             if (atcion.scale !== undefined) {
-              insPlatform.setScale(atcion.scale);
+              // insPlatform.setScale(atcion.scale);
+              insPlatform.setScale(atcion.scale.x, atcion.scale.y);
             }
             if (atcion.refreshBody) {
               insPlatform.refreshBody();
+            }
+            if (atcion.color !== undefined) {
+              insPlatform.setTint(atcion.color);
             }
           });
         }
@@ -123,8 +125,8 @@ export class Set extends Phaser.Scene {
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
 
-        this.player.setSize(32, 40);
-        this.player.setOffset(16, 20);
+        this.player.setSize(20, 40);
+        this.player.setOffset(32, 20);
       }
     }
   }
@@ -196,17 +198,19 @@ export class Set extends Phaser.Scene {
   }
   //
   crashEventSet(arr) {
-    arr.forEach((event) => {
-      let matchedObj;
+    if (arr !== undefined) {
+      arr.forEach((event) => {
+        let matchedObj;
 
-      this.objArr.forEach((obj) => {
-        if (event[0] === obj.children.entries[0].texture.key) {
-          matchedObj = obj;
-        }
+        this.objArr.forEach((obj) => {
+          if (event[0] === obj.children.entries[0].texture.key) {
+            matchedObj = obj;
+          }
+        });
+
+        this.physics.add.overlap(this.player, matchedObj, event[1], null, this);
       });
-
-      this.physics.add.overlap(this.player, matchedObj, event[1], null, this);
-    });
+    }
   }
   cameraSet(obj) {
     //camera
