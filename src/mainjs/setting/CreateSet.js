@@ -1,7 +1,7 @@
 // import { collectStar, hitBomb } from "../funcs/event/EveryEvents.js";
 
 const config = {
-  backGround: { fileName: "backGround" },
+  backGround: ["wood0", "wood1", "wood2", "wood3", "wood4", "wood5", "wood6"],
 
   anis: [
     {
@@ -82,6 +82,7 @@ const config = {
   cameraConfig: { x: 800, y: 600 },
 };
 
+//안만듬
 // this.scoreText = this.add.text(16, 16, "score: 0", {
 //     fontSize: "32px",
 //     fill: "#000",

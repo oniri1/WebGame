@@ -9,7 +9,14 @@ export class Example extends Set {
   }
 
   preload() {
-    this.load.image("backGround", "imgs/background/stone.png");
+    this.load.image("wood0", "imgs/background/wood0.png");
+    this.load.image("wood1", "imgs/background/wood1.png");
+    this.load.image("wood2", "imgs/background/wood2.png");
+    this.load.image("wood3", "imgs/background/wood3.png");
+    this.load.image("wood4", "imgs/background/wood4.png");
+    this.load.image("wood5", "imgs/background/wood5.png");
+    this.load.image("wood6", "imgs/background/wood6.png");
+
     this.load.image("ground", "imgs/platform.png");
 
     this.load.spritesheet("male_left", "imgs/male_left.png", {

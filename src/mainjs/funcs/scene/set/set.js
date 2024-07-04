@@ -27,20 +27,22 @@ export class Set extends Phaser.Scene {
     this.crashEventSet(this.everySetValues.playerCrashEvents);
     this.cameraSet(this.everySetValues.cameraConfig);
   }
-  backgroundSet(obj, worldSize) {
-    if (obj !== undefined && worldSize !== undefined) {
+  backgroundSet(arr, worldSize) {
+    if (arr !== undefined && worldSize !== undefined) {
       const x = worldSize.x;
       const y = worldSize.y;
 
-      const texture = this.textures.get(obj.fileName);
-      const sourceImage = texture.getSourceImage();
-
-      const imgX = sourceImage.width;
-      const imgY = sourceImage.height;
-
       for (let makeX = 0, makeY = 0; true; ) {
+        const backImg = arr[Math.floor(Math.random() * arr.length)];
+
+        const texture = this.textures.get(backImg);
+        const sourceImage = texture.getSourceImage();
+
+        const imgX = sourceImage.width;
+        const imgY = sourceImage.height;
+
         console.log("월드 세팅중");
-        this.add.image(makeX, makeY, obj.fileName);
+        this.add.image(makeX, makeY, backImg);
 
         if (makeX < x) {
           makeX += imgX;
